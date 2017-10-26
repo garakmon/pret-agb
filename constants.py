@@ -189,10 +189,3 @@ def setup_version(version):
 			if k.startswith('FIELD_OBJ_GFX_')
 			or k.startswith('MAP_OBJ_GFX_')
 		}
-	path = version.get('map_constants_path')
-	if path:
-		version['map_constants'] = {
-			v: k for k, v in read_constants(path).items()
-			if k.startswith('FIELD_OBJ_GFX_')
-			or k.startswith('MAP_OBJ_GFX_')
-		}
