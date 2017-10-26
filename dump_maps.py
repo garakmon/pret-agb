@@ -184,6 +184,7 @@ class MapBGEventsPointer(Pointer):
 
 class MapEvents(Macro):
 	name = 'map_events'
+	is_global = True
 	param_classes = [
 		Byte, Byte, Byte, Byte,
 		MapObjectsPointer, MapWarpsPointer, MapCoordEventsPointer, MapBGEventsPointer,

@@ -51,10 +51,20 @@ class EventScript(Script):
         address = self.last_address
         command_class = self.commands.get(Byte(address, version=self.version, rom=self.rom).value)
         if command_class:
-            if command_class.name in ['end']:
+            if command_class.name in ['end', 'return', 'waitstate']:
                 command = command_class(address, version=self.version, rom=self.rom)
                 self.chunks += [command]
                 address += command.length
+			elif command_class.name in ['release']:
+				command_class = self.commands.get(Byte(address+1, version=self.version, rom=self.rom).value)
+				if command_class.name in ['end']:
+					command = command_class(address, version=self.version, rom=self.rom)
+					self.chunks += [command]
+					address += command.length
+					address += 1
+					command = command_class(address, version=self.version, rom=self.rom)
+					self.chunks += [command]
+					address += command.length
         self.last_address = address
 
     def filter_macros(self):
