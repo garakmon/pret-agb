@@ -5,14 +5,14 @@ emerald = {
 	'version': 'emerald',
 	'map_groups_address': 0x486578,
 	'baserom_path': 'baserom.gba',
-	'maps_paths': ['asm/emerald.s'],
+	'maps_paths': ['data/event_scripts.s', 'data/rom4.s', 'data/graphics.s', 'data/sound_data.s', 'data/battle_anims.s'],
 	'force_stop_addresses': [
 		0x209a99, # SlateportCityBattleTent waitstate
 		0x2c8381, # TrainerHill1F missing end
 	],
 	'map_names': map_names.emerald,
-	'field_object_constants_path': 'constants/field_object_constants.s',
-	'battle_frontier_constants_path': 'constants/battle_frontier_constants.s',
+	'field_object_constants_path': 'constants/map_object_constants.inc',
+	'battle_frontier_constants_path': 'constants/battle_frontier_constants.inc',
 	'charmap': charmap.emerald_decode,
 	'charmap_jp': charmap.emerald_jp_decode,
 	'mapfile': 'pokeemerald.map',

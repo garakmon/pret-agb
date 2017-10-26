@@ -92,6 +92,7 @@ class MapObject(Macro):
 		('index', Byte),
 		('sprite', FieldGFXId),
 		('replacement', Byte),
+		(Byte), # filler
 		('x', Int16),
 		('y', Int16),
 		('elevation', Byte),

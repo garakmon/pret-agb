@@ -48,6 +48,7 @@ def read_map_groups(path, map_names):
 	lines = open(path).readlines()
 	variables = {}
 	maps = {}
+	map_constants = {}
 	for line in lines:
 		line = line.strip()
 		if line.startswith('.set'):
@@ -56,24 +57,23 @@ def read_map_groups(path, map_names):
 		elif line.startswith('new_map_group'):
 			variables['cur_map_group'] += 1
 			variables['cur_map_num'] = 0
+			map_constants[variables['cur_map_group']] = {}
 			maps[variables['cur_map_group']] = {}
 		elif line.startswith('map_group'):
 			text = line.split('map_group')[1]
 			group, num = map(variables.get, ['cur_map_group','cur_map_num'])
-			name = text.split()[0].title().replace('_','')
-			maps[group][num] = name
+			name = text.split()[0]
+			map_constants[group][num] = name
 			variables['cur_map_num'] += 1
 
-	# Replace the constants with capitalized map names.
-	# This is only necessary if the constants have not already been fixed.
 	i = 0
-	for group_num, group in maps.items():
+	for group_num, group in map_constants.items():
 		for map_num, name in group.items():
 			new_name = map_names[i]
 			maps[group_num][map_num] = new_name
 			i += 1
 
-	return maps
+	return maps, map_constants
 
 def get_map_name(map_groups, group, num):
     try:
@@ -148,7 +148,7 @@ def setup_version(version):
 	if version.has_key('baserom_path'):
 		version['baserom'] = load_rom(version['baserom_path'])
 	if version.has_key('map_names'):
-		version['map_groups'] = read_map_groups('constants/map_constants.inc', version['map_names'])
+		version['map_groups'], version['map_constants'] = read_map_groups('constants/map_constants.inc', version['map_names'])
 	version.update({
 		'pokemon_constants': read_reverse_constants('constants/species_constants.inc'),
 		'item_constants': read_reverse_constants('constants/item_constants.inc'),
@@ -184,7 +184,14 @@ def setup_version(version):
 		}
 	path = version.get('field_object_constants_path')
 	if path:
-		version['field_gfx_constants'] = {
+		version['field_object_constants'] = {
+			v: k for k, v in read_constants(path).items()
+			if k.startswith('FIELD_OBJ_GFX_')
+			or k.startswith('MAP_OBJ_GFX_')
+		}
+	path = version.get('map_constants_path')
+	if path:
+		version['map_constants'] = {
 			v: k for k, v in read_constants(path).items()
 			if k.startswith('FIELD_OBJ_GFX_')
 			or k.startswith('MAP_OBJ_GFX_')

@@ -49,8 +49,8 @@ event_commands[0x5c]['macro'] = """\
 event_supplementary = """
 @ Supplementary
 
-	.macro jumpeq dest
-	jumpif 1, \\dest
+	.macro goto_eq dest
+	goto_if 1, \\dest
 	.endm
 
 	.macro switch var
@@ -59,7 +59,7 @@ event_supplementary = """
 
 	.macro case condition, dest
 	compare 0x8000, \\condition
-	jumpeq \\dest
+	goto_eq \\dest
 	.endm
 """
 

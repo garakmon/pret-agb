@@ -75,7 +75,7 @@ class EventScript(Script):
                     macro = Switch(chunks=[copyvar])
                     self.chunks.pop(i)
                     self.chunks.insert(i, macro)
-            elif name == 'compare':
+            elif name == 'compare_var_to_value':
                 if copyvar:
                     if command.chunks[1].value == 0x8000:
                         compare = command
@@ -93,29 +93,29 @@ class EventScript(Script):
                             i -= 1
                         except:
                             pass
-            if name != 'compare':
+            if name != 'compare_var_to_value':
                 compare = None
             i += 1
 
     def filter_msgbox(self):
-        loadptr = None
+        loadword = None
         i = 0
         while i < len(self.chunks):
             command = self.chunks[i]
             name = getattr(command, 'name', None)
-            if name == 'loadptr':
-                loadptr = command
+            if name == 'loadword':
+                loadword = command
             elif name == 'callstd':
-                if loadptr:
-                    macro = MsgBox(loadptr=loadptr, callstd=command)
-                    index = self.chunks.index(loadptr)
+                if loadword:
+                    macro = MsgBox(loadword=loadword, callstd=command)
+                    index = self.chunks.index(loadword)
                     self.chunks.pop(index)
                     self.chunks.pop(index)
                     self.chunks.insert(index, macro)
                     i -= 1
-                loadptr = None
+                loadword = None
             else:
-                loadptr = None
+                loadword = None
             i += 1
 
     def filter_giveitem(self):
@@ -172,20 +172,20 @@ def replace_class(chunk, name, class_):
 		i += 1
 
 #	def filter_msgbox(self):
-#		loadptr = None
+#		loadword = None
 #		chunks = IterChunks(self.chunks)
 #		for command in chunks:
 #			name = getattr(command, 'name', None)
-#			if name == 'loadptr':
-#				loadptr = command
+#			if name == 'loadword':
+#				loadword = command
 #			elif name == 'callstd':
-#				if loadptr:
-#					macro = MsgBox(loadptr=loadptr, callstd=command)
-#					chunks.replace(loadptr, macro)
+#				if loadword:
+#					macro = MsgBox(loadword=loadword, callstd=command)
+#					chunks.replace(loadword, macro)
 #					chunks.remove(callstd)
-#				loadptr = None
+#				loadword = None
 #			else:
-#				loadptr = None
+#				loadword = None
 
 #class IterChunks:
 #	def init(self, chunks):
@@ -1301,7 +1301,7 @@ event_commands = {
         'param_types': ['pointer'],
         'aliases': ['fakemsgbox', 'vtext'],
     },
-    0xbe: { 'name': 'vloadptr',
+    0xbe: { 'name': 'vloadword',
         'param_names': ['pointer'],
         'param_types': ['pointer'],
         'aliases': ['fakeloadpointer', 'vloadptr'],
@@ -1560,13 +1560,13 @@ class SwitchCase(EventScriptMacro):
 class MsgBox(EventScriptMacro):
 	name = 'msgbox'
 	def parse(self):
-		self.chunks = [self.loadptr, self.callstd]
+		self.chunks = [self.loadword, self.callstd]
 		EventScriptMacro.parse(self)
 	def _get_params(self):
-		return [self.loadptr.params['value'], self.callstd.params['function']]
+		return [self.loadword.params['value'], self.callstd.params['function']]
 
 class GiveItem(EventScriptMacro):
-	name = 'giveitem'
+	name = 'giveitem_std'
 	def parse(self):
 		self.chunks = [self.copyitem, self.copyamount, self.callstd]
 		EventScriptMacro.parse(self)
@@ -1582,7 +1582,7 @@ class GiveItem(EventScriptMacro):
 		return params
 
 class GiveDecoration(EventScriptMacro):
-	name = 'givedecoration'
+	name = 'givedecoration_std'
 	def parse(self):
 		self.chunks = [self.setorcopyvar, self.callstd]
 		EventScriptMacro.parse(self)

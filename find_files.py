@@ -39,7 +39,7 @@ def get_label(line):
 
 
 def split_map_scripts(version):
-	root = 'data/data1.s'
+	root = 'data/event_scripts.s'
 
 	seen = []
 	def get_filename():
@@ -79,7 +79,7 @@ def split_map_text(version):
 	if version['version'] == 'emerald':
 		return
 
-	root = 'data/data1.s'
+	root = 'data/event_scripts.s'
 
 	seen = []
 	def get_filename():
@@ -115,7 +115,7 @@ def split_map_text(version):
 	split_stuff(root, writes)
 
 def split_map_assets():
-	root = 'data/data2.s'
+	root = 'data/rom4.s'
 
 	start = None
 	enders = ('_MapBorder', '_MapBlockdata', '_MapAttributes')
@@ -131,7 +131,7 @@ def split_map_assets():
 
 
 def split_map_events():
-	root = 'data/data2.s'
+	root = 'data/battle_anims.s'
 
 	seen = []
 	def get_filename():
@@ -164,7 +164,7 @@ def split_map_events():
 
 
 def split_map_headers(version):
-	root = 'data/data2.s'
+	root = 'data/rom4.s'
 
 	seen = []
 	def get_filename():
@@ -197,7 +197,7 @@ def split_map_headers(version):
 
 
 def split_map_groups():
-	root = 'data/data2.s'
+	root = 'data/rom4.s'
 
 	start = None
 	for i, line in enumerate(open(root)):
@@ -212,7 +212,7 @@ def split_map_groups():
 
 
 def split_map_connections():
-	root = 'data/data2.s'
+	root = 'data/rom4.s'
 
 	seen = []
 	def get_filename():

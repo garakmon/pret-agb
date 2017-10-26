@@ -338,8 +338,8 @@ class BFItem(Item):
 class TrainerId(WordOrVariable):
     constants = 'trainer_constants'
 
-class FieldGFXId(WordOrVariable):
-    constants = 'field_gfx_constants'
+class FieldGFXId(Byte):
+    constants = 'field_object_constants'
 
 class Macro(ParamGroup):
     atomic = True
@@ -526,7 +526,7 @@ class MapId(Macro):
             return 'NONE'
         if group == 0xff and number == 0xff:
             return 'UNDEFINED'
-        map_name = self.version.get('map_groups', {}).get(group, {}).get(number)
+        map_name = self.version.get('map_constants', {}).get(group, {}).get(number)
         if not map_name:
             return Word(self.address, version=self.version, rom=self.rom).asm
         return map_name

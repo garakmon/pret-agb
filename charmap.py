@@ -29,9 +29,12 @@ def decode(input, decode_charmap):
                         if color:
                             item += '{{{}}}'.format(color)
                             i += 1
+                elif item in ['{CLEAR_TO}']:
+                    item += ''.join('{' + "{0:#0{1}x}".format(old[i],4) + '}')
+                    i += 1
 		chars = item
 		if chars is None:
-			chars = ''.join('{' + hex(byte) + '}' for byte in old[start:i])
+			chars = ''.join('{' + "{0:#0{1}x}".format(old[i],4) + '}' for byte in old[start:i])
 		new += chars
 	return new
 
@@ -57,21 +60,21 @@ def encode(input, encode_charmap):
 
 colors = [
 	'TRANSPARENT',
-	'DARK_GREY',
-	'RED',
-	'GREEN',
-	'BLUE',
-	'YELLOW',
-	'CYAN',
-	'MAGENTA',
-	'LIGHT_GREY',
-	'BLACK',
-	'BLACK2',
-	'SILVER',
 	'WHITE',
-	'SKY_BLUE',
+	'DARK_GREY',
+	'LIGHT_GREY',
+	'RED',
+	'LIGHT_RED',
+	'GREEN',
+	'LIGHT_GREEN',
+	'BLUE',
 	'LIGHT_BLUE',
-	'WHITE2',
+	'DYNAMIC_COLOR1',
+	'DYNAMIC_COLOR2',
+	'DYNAMIC_COLOR3',
+	'DYNAMIC_COLOR4',
+	'DYNAMIC_COLOR5',
+	'DYNAMIC_COLOR6',
 ]
 colors = dict(enumerate(colors))
 
@@ -340,14 +343,24 @@ emerald_decode = {
 		2: '{HIGHLIGHT}',
 		3: '{SHADOW}',
 		4: '{COLOR_HIGHLIGHT_SHADOW}',
+		5: '{PALETTE}',
 		6: '{SIZE}',
+		7: '{UNKNOWN_7}',
 		8: '{PAUSE}',
 		9: '{PAUSE_UNTIL_PRESS}',
+		10: '{UNKNOWN_A}',
+		11: '{PLAY_BGM}',
 		12: '{ESCAPE}',
 		13: '{SHIFT_TEXT}',
-		16: '{PLAY_MUSIC}',
-		21: '{ENLARGE}',
-		22: '{SET_TO_DEFAULT_SIZE}',
+		14: '{UNKNOWN_E}',
+		15: '{UNKNOWN_F}',
+		16: '{PLAY_SE}',
+		17: '{CLEAR}',
+		18: '{SKIP}',
+		19: '{CLEAR_TO}',
+		20: '{UNKNOWN_14}',
+		21: '{JPN}',
+		22: '{ENG}',
 		23: '{PAUSE_MUSIC}',
 		24: '{RESUME_MUSIC}',
 	},
