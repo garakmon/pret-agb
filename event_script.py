@@ -58,16 +58,15 @@ class EventScript(Script):
                 command = command_class(address, version=self.version, rom=self.rom)
                 self.chunks += [command]
                 address += command.length
-			elif command_class.name in ['release']:
-				command_class = self.commands.get(Byte(address+1, version=self.version, rom=self.rom).value)
-				if command_class.name in ['end']:
-					command = command_class(address, version=self.version, rom=self.rom)
-					self.chunks += [command]
-					address += command.length
-					address += 1
-					command = command_class(address, version=self.version, rom=self.rom)
-					self.chunks += [command]
-					address += command.length
+            elif command_class.name in ['release']:
+                command_class_second = self.commands.get(Byte(address+1, version=self.version, rom=self.rom).value)
+                if command_class_second.name in ['end']:
+                    command = command_class(address, version=self.version, rom=self.rom)
+                    self.chunks += [command]
+                    address += command.length
+                    command = command_class_second(address, version=self.version, rom=self.rom)
+                    self.chunks += [command]
+                    address += command.length
         self.last_address = address
 
     def filter_macros(self):
@@ -171,57 +170,57 @@ class EventScript(Script):
             i += 1
 
 def replace_class(chunk, name, class_):
-	classes = list(chunk.param_classes)
-	i = 0
-	for c in classes:
-		try:
-			if c[0] == name:
-				classes[i] = (name, class_)
-				chunk.param_classes = classes
-				chunk.parse()
-				break
-		except:
-			pass
-		i += 1
+    classes = list(chunk.param_classes)
+    i = 0
+    for c in classes:
+        try:
+            if c[0] == name:
+                classes[i] = (name, class_)
+                chunk.param_classes = classes
+                chunk.parse()
+                break
+        except:
+            pass
+        i += 1
 
-#	def filter_msgbox(self):
-#		loadword = None
-#		chunks = IterChunks(self.chunks)
-#		for command in chunks:
-#			name = getattr(command, 'name', None)
-#			if name == 'loadword':
-#				loadword = command
-#			elif name == 'callstd':
-#				if loadword:
-#					macro = MsgBox(loadword=loadword, callstd=command)
-#					chunks.replace(loadword, macro)
-#					chunks.remove(callstd)
-#				loadword = None
-#			else:
-#				loadword = None
+#    def filter_msgbox(self):
+#        loadword = None
+#        chunks = IterChunks(self.chunks)
+#        for command in chunks:
+#            name = getattr(command, 'name', None)
+#            if name == 'loadword':
+#                loadword = command
+#            elif name == 'callstd':
+#                if loadword:
+#                    macro = MsgBox(loadword=loadword, callstd=command)
+#                    chunks.replace(loadword, macro)
+#                    chunks.remove(callstd)
+#                loadword = None
+#            else:
+#                loadword = None
 
 #class IterChunks:
-#	def init(self, chunks):
-#		self.chunks = chunks
-#		self.index = -1
-#	def __iter__(self):
-#		return self
-#	def next(self):
-#		self.index += 1
-#		try:
-#			chunk = self.chunks[self.index]
-#		except:
-#			raise StopIteration
-#		return chunk
-#	def replace(self, target, replacement):
-#		index = self.chunks.index(target)
-#		self.chunks.pop(index)
-#		self.chunks.insert(index, replacement)
-#	def remove(self, target):
-#		index = self.chunks.index(target)
-#		self.chunks.pop(index)
-#		if self.index > index:
-#			self.index -= 1
+#    def init(self, chunks):
+#        self.chunks = chunks
+#        self.index = -1
+#    def __iter__(self):
+#        return self
+#    def next(self):
+#        self.index += 1
+#        try:
+#            chunk = self.chunks[self.index]
+#        except:
+#            raise StopIteration
+#        return chunk
+#    def replace(self, target, replacement):
+#        index = self.chunks.index(target)
+#        self.chunks.pop(index)
+#        self.chunks.insert(index, replacement)
+#    def remove(self, target):
+#        index = self.chunks.index(target)
+#        self.chunks.pop(index)
+#        if self.index > index:
+#            self.index -= 1
 
 class EventScriptPointer(Pointer):
     target = EventScript
@@ -234,29 +233,29 @@ class PokemartPointer(Pointer):
     target = Pokemart
 
 class PokemartDecor(Pokemart):
-	param_classes = [DecorList, EventScript]
+    param_classes = [DecorList, EventScript]
 
 class PokemartDecorPointer(PokemartPointer):
-	target = PokemartDecor
+    target = PokemartDecor
 
 class TrainerbattleArgs(ParamGroup):
-	param_classes = [('type', Byte), TrainerId, Word,]
-	def parse(self):
-		ParamGroup.parse(self)
-		self.param_classes = list(self.param_classes)
+    param_classes = [('type', Byte), TrainerId, Word,]
+    def parse(self):
+        ParamGroup.parse(self)
+        self.param_classes = list(self.param_classes)
 
-		type_ = self.params['type'].value
-		if type_ != 3:
-			self.param_classes += [TextPointer]
-		self.param_classes += [TextPointer]
-		if type_ in (1, 2):
-			self.param_classes += [EventScriptPointer]
-		if type_ in (4, 7, 6, 8):
-			self.param_classes += [TextPointer]
-		if type_ in (6, 8):
-			self.param_classes += [EventScriptPointer]
+        type_ = self.params['type'].value
+        if type_ != 3:
+            self.param_classes += [TextPointer]
+        self.param_classes += [TextPointer]
+        if type_ in (1, 2):
+            self.param_classes += [EventScriptPointer]
+        if type_ in (4, 7, 6, 8):
+            self.param_classes += [TextPointer]
+        if type_ in (6, 8):
+            self.param_classes += [EventScriptPointer]
 
-		ParamGroup.parse(self)
+        ParamGroup.parse(self)
 
 class Special(Word):
     constants = 'specials'
@@ -1548,14 +1547,14 @@ event_command_classes['goto_if'] = EventCommand_goto_if
 # EventScript macros
 
 class EventScriptMacro(Macro):
-	def parse(self):
-		self.address = self.chunks[0].address
-		self.last_address = self.chunks[-1].last_address
-	def _get_params(self):
-		pass
-	@property
-	def asm(self):
-		return ', '.join(param.asm for param in self._get_params())
+    def parse(self):
+        self.address = self.chunks[0].address
+        self.last_address = self.chunks[-1].last_address
+    def _get_params(self):
+        pass
+    @property
+    def asm(self):
+        return ', '.join(param.asm for param in self._get_params())
 
 class Switch(EventScriptMacro):
     name = 'switch'
@@ -1571,66 +1570,66 @@ class SwitchCase(EventScriptMacro):
         return [self.compare.params['value'], self.goto_if.params['destination']]
 
 class MsgBox(EventScriptMacro):
-	name = 'msgbox'
-	def parse(self):
-		self.chunks = [self.loadword, self.callstd]
-		EventScriptMacro.parse(self)
-	def _get_params(self):
-		return [self.loadword.params['value'], self.callstd.params['function']]
+    name = 'msgbox'
+    def parse(self):
+        self.chunks = [self.loadword, self.callstd]
+        EventScriptMacro.parse(self)
+    def _get_params(self):
+        return [self.loadword.params['value'], self.callstd.params['function']]
 
 class GiveItem(EventScriptMacro):
-	name = 'giveitem_std'
-	def parse(self):
-		self.chunks = [self.copyitem, self.copyamount, self.callstd]
-		EventScriptMacro.parse(self)
-	def _get_params(self):
-		item = self.copyitem.params['source']
-		amount = self.copyamount.params['source']
-		function = self.callstd.params['function']
-		params = [item]
-		if amount.value != 1 or function.value != 0:
-			params += [amount]
-		if function.value != 0:
-			params += [function]
-		return params
+    name = 'giveitem_std'
+    def parse(self):
+        self.chunks = [self.copyitem, self.copyamount, self.callstd]
+        EventScriptMacro.parse(self)
+    def _get_params(self):
+        item = self.copyitem.params['source']
+        amount = self.copyamount.params['source']
+        function = self.callstd.params['function']
+        params = [item]
+        if amount.value != 1 or function.value != 0:
+            params += [amount]
+        if function.value != 0:
+            params += [function]
+        return params
 
 class GiveDecoration(EventScriptMacro):
-	name = 'givedecoration_std'
-	def parse(self):
-		self.chunks = [self.setorcopyvar, self.callstd]
-		EventScriptMacro.parse(self)
-	def _get_params(self):
-		return [self.setorcopyvar.params['source']]
+    name = 'givedecoration_std'
+    def parse(self):
+        self.chunks = [self.setorcopyvar, self.callstd]
+        EventScriptMacro.parse(self)
+    def _get_params(self):
+        return [self.setorcopyvar.params['source']]
 
 #class GiveItemFanfare(EventScriptMacro):
-#	name = 'giveitem'
-#	def parse(self):
-#		self.chunks = [self.copyitem, self.copyamount, self.copyse, self.callstd]
-#		EventScriptMacro.parse(self)
-#	def _get_params(self):
-#		return [self.copyitem.params['source'], self.copyamount.params['source'], self.copyse.params['source']]
+#    name = 'giveitem'
+#    def parse(self):
+#        self.chunks = [self.copyitem, self.copyamount, self.copyse, self.callstd]
+#        EventScriptMacro.parse(self)
+#    def _get_params(self):
+#        return [self.copyitem.params['source'], self.copyamount.params['source'], self.copyse.params['source']]
 
 #class WildBattle(EventScriptMacro):
-#	name = 'wildbattle'
-#	def parse(self):
-#		self.chunks = [self.setwildbattle, self.dowildbattle]
-#		EventScriptMacro.parse(self)
-#	def _get_params(self):
-#		params = self.setwildbattle.params
-#		return [params['species'], params['level'], params['item']]
+#    name = 'wildbattle'
+#    def parse(self):
+#        self.chunks = [self.setwildbattle, self.dowildbattle]
+#        EventScriptMacro.parse(self)
+#    def _get_params(self):
+#        params = self.setwildbattle.params
+#        return [params['species'], params['level'], params['item']]
 
 #class AddPokenav(EventScriptMacro):
-#	name = 'addpokenav'
-#	def parse(self):
-#		self.chunks = [self.copyvarifnotzero, self.callstd]
-#		EventScriptMacro.parse(self)
-#	def _get_params(self):
-#		return [self.copyvarifnotzero['source']]
+#    name = 'addpokenav'
+#    def parse(self):
+#        self.chunks = [self.copyvarifnotzero, self.callstd]
+#        EventScriptMacro.parse(self)
+#    def _get_params(self):
+#        return [self.copyvarifnotzero['source']]
 
 if __name__ == '__main__':
     args = get_args(
         'address',
-	('version', {'nargs': '?', 'default': 'ruby'}),
+    ('version', {'nargs': '?', 'default': 'ruby'}),
     )
 
     print print_recursive(
