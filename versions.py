@@ -5,7 +5,7 @@ emerald = {
 	'version': 'emerald',
 	'map_groups_address': 0x486578,
 	'baserom_path': 'baserom.gba',
-	'maps_paths': ['data/event_scripts.s', 'data/rom4.s', 'data/graphics.s', 'data/sound_data.s', 'data/battle_anims.s'],
+	'maps_paths': ['data/event_scripts.s', 'data/rom4.s', 'data/graphics.s', 'data/sound_data.s', 'data/rom_8525F58.s'],
 	'force_stop_addresses': [
 		0x209a99, # SlateportCityBattleTent waitstate
 		0x2c8381, # TrainerHill1F missing end

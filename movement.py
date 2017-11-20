@@ -30,7 +30,14 @@ movements = [
 movement_commands = {
 	0x91: { 'name': 'step_91', },
 	0x92: { 'name': 'step_92', },
+	0x93: { 'name': 'step_93', },
+	0x94: { 'name': 'step_94', },
+	0x95: { 'name': 'step_95', },
 	0x96: { 'name': 'step_96', },
+	0x97: { 'name': 'step_97', },
+	0x98: { 'name': 'step_98', },
+	0x99: { 'name': 'step_99', },
+	0x9A: { 'name': 'step_9A', },
 	0xfe: { 'name': 'step_end', 'end': True, },
 }
 

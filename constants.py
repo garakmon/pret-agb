@@ -76,10 +76,10 @@ def read_map_groups(path, map_names):
 	return maps, map_constants
 
 def get_map_name(map_groups, group, num):
-    try:
-        return map_groups[group][num]
-    except:
-        return None
+	try:
+		return map_groups[group][num]
+	except:
+		return None
 
 def read_constants(path):
 	variables = {}
@@ -110,7 +110,18 @@ def read_constants(path):
 				if value in variables.keys():
 					value = variables[value]
 				else:
-					value = int(value, 0)
+					if value.startswith('(') and value.endswith(')'):
+						value = value[1:-1]
+					try:
+						value = int(value, 0)
+					except ValueError:
+						pieces = [x.strip() for x in value.split('+')]
+						value = 0
+						for x in pieces:
+							if x in variables.keys():
+								value += variables[x]
+							else:
+								value += int(x, 0)
 				variables[name.strip()] = value
 
 		elif line.startswith('enum_start'):
@@ -161,12 +172,15 @@ def setup_version(version):
 			and not k.startswith('TRAINER_ENCOUNTER_MUSIC_')
 		},
 		'move_constants': read_reverse_constants('constants/move_constants.inc'),
+		'song_constants': read_reverse_constants('constants/songs.inc'),
 		'battle_text_constants': read_reverse_constants('constants/battle_text.inc'),
 		'ability_constants': read_reverse_constants('constants/ability_constants.inc'),
 		'type_constants': read_reverse_constants('constants/type_constants.inc'),
 		'move_effect_constants': read_reverse_constants('constants/battle_move_effects.inc'),
 		'hold_effect_constants': read_reverse_constants('constants/hold_effects.inc'),
 		'specials': read_specials(version.get('specials_path', 'data/specials.inc')),
+		'variables': read_reverse_constants('constants/variables.inc'),
+		'flags': read_reverse_constants('constants/flags.inc'),
 	})
 
 	if version.get('mapfile'):

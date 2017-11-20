@@ -302,15 +302,27 @@ class ParamGroup(Chunk):
                 text += chunk.to_asm()
         return text
 
-class Variable(Word):
-    variable_constants = {
-        0x800c: 'FACING',
-        0x800d: 'RESULT',
-        0x800f: 'LAST_TALKED',
-    }
+class Flag(Word):
+    constants = 'flags'
+
     @property
     def asm(self):
-	return self.constant or self.variable_constants.get(self.value) or '0x{:x}'.format(self.value)
+	return self.constant or '0x{:X}'.format(self.value)
+
+class Variable(Word):
+    var_constants = 'variables'
+
+    def get_var_constant(self, var_constants=None):
+        var_constants = self.version.get(self.var_constants, {})
+	return var_constants.get(self.value)
+
+    @property
+    def var_constant(self):
+        return self.get_var_constant()
+
+    @property
+    def asm(self):
+		return self.var_constant or '0x{:X}'.format(self.value)
 
 class WordOrVariable(Variable):
     @property
@@ -327,6 +339,9 @@ class Item(WordOrVariable):
 
 class Move(WordOrVariable):
     constants = 'move_constants'
+
+class Song(Word):
+    constants = 'song_constants'
 
 class Decoration(WordOrVariable):
     constants = 'decoration_constants'

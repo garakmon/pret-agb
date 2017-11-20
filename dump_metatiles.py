@@ -5,7 +5,7 @@ if __name__ == '__main__':
 	rom = bytearray(open('baserom.gba', 'rb').read())
 
 	lines = []
-	for line in open('data/tilesets/metatiles.s'):
+	for line in open('data/tilesets/metatiles.inc'):
 		if 'gMetatiles' in line:
 			name = line.split(':')[0].split('gMetatiles_')[1]
 			attributes = False

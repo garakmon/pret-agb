@@ -29,8 +29,8 @@ def decode(input, decode_charmap):
                         if color:
                             item += '{{{}}}'.format(color)
                             i += 1
-                elif item in ['{CLEAR_TO}']:
-                    item += ''.join('{' + "{0:#0{1}x}".format(old[i],4) + '}')
+                elif item in ['{CLEAR_TO}', '{PAUSE}']:
+                    item = item[:-1] + ' 0x' + "{0:0{1}X}".format(old[i],2) + '}'
                     i += 1
 		chars = item
 		if chars is None:

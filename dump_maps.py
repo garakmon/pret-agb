@@ -303,7 +303,7 @@ class Map(ParamGroup):
 		('events_p', MapEventsPointer),
 		('scripts_p', MapScriptsPointer),
 		('connections_p', MapConnectionsPointer),
-		('bgm', Word),
+		('bgm', Song),
 		('index', Word),
 		('location', Byte),
 		('visibility', Byte),

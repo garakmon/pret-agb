@@ -131,7 +131,7 @@ def split_map_assets():
 
 
 def split_map_events():
-	root = 'data/battle_anims.s'
+	root = 'data/rom_8525F58.s'
 
 	seen = []
 	def get_filename():
