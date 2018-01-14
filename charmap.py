@@ -32,9 +32,12 @@ def decode(input, decode_charmap):
                 elif item in ['{CLEAR_TO}', '{PAUSE}']:
                     item = item[:-1] + ' 0x' + "{0:0{1}X}".format(old[i],2) + '}'
                     i += 1
+                elif item in ['{UNK_CTRL_F9}']:
+                    item = item[:-1] + ' 0x' + "{0:0{1}X}".format(old[i],2) + '}'
+                    i += 1
 		chars = item
 		if chars is None:
-			chars = ''.join('{' + "{0:#0{1}x}".format(old[i],4) + '}' for byte in old[start:i])
+			chars = ''.join('{' + "{0:#0{1}x}".format(old[start],4) + '}' for byte in old[start:i])
 		new += chars
 	return new
 
@@ -334,7 +337,7 @@ emerald_decode = {
 	0xF6: u'ü',
 	0xF7: u'{0xF7}', # None
 	0xF8: u'{0xF8}', # None
-	0xF9: u'{0xF9}', # None
+	0xF9: u'{UNK_CTRL_F9}',
 	0xFA: u'\\l', # None
 	0xFB: u'\\p',
 	0xFC: {
@@ -549,6 +552,71 @@ emerald_jp_decode = {
 	0x9F: u'ポ',
 	0xA0: u'ッ',
 
+# English characters
+	0xB0: u'…',
+	0xB1: u'“',
+	0xB2: u'”',
+	0xB3: u'‘',
+	0xB4: u'’', #u'\'',
+	0xB5: u'♂',
+	0xB6: u'♀',
+	0xB7: u'¥',
+	0xB8: u',',
+	0xB9: u'×',
+	0xBA: u'/',
+	0xBB: u'A',
+	0xBC: u'B',
+	0xBD: u'C',
+	0xBE: u'D',
+	0xBF: u'E',
+	0xC0: u'F',
+	0xC1: u'G',
+	0xC2: u'H',
+	0xC3: u'I',
+	0xC4: u'J',
+	0xC5: u'K',
+	0xC6: u'L',
+	0xC7: u'M',
+	0xC8: u'N',
+	0xC9: u'O',
+	0xCA: u'P',
+	0xCB: u'Q',
+	0xCC: u'R',
+	0xCD: u'S',
+	0xCE: u'T',
+	0xCF: u'U',
+	0xD0: u'V',
+	0xD1: u'W',
+	0xD2: u'X',
+	0xD3: u'Y',
+	0xD4: u'Z',
+	0xD5: u'a',
+	0xD6: u'b',
+	0xD7: u'c',
+	0xD8: u'd',
+	0xD9: u'e',
+	0xDA: u'f',
+	0xDB: u'g',
+	0xDC: u'h',
+	0xDD: u'i',
+	0xDE: u'j',
+	0xDF: u'k',
+	0xE0: u'l',
+	0xE1: u'm',
+	0xE2: u'n',
+	0xE3: u'o',
+	0xE4: u'p',
+	0xE5: u'q',
+	0xE6: u'r',
+	0xE7: u's',
+	0xE8: u't',
+	0xE9: u'u',
+	0xEA: u'v',
+	0xEB: u'w',
+	0xEC: u'x',
+	0xED: u'y',
+	0xEE: u'z',
+
 # Japanese punctuation
 	0x00: u'　',
 	0xAB: u'！',
@@ -558,6 +626,7 @@ emerald_jp_decode = {
 	0xAF: u'·',
 	0xB0: u'‥',
 
+	0xF9: u'{UNK_CTRL_F9}',
 	0xFA: u'\\l',
 	0xFB: u'\\p',
 	0xFC: {
