@@ -624,7 +624,7 @@ emerald_jp_decode = {
 	0xAD: u'。',
 	0xAE: u'ー',
 	0xAF: u'·',
-	0xB0: u'‥',
+	0xB0: u'⋯',
 
 	0xF9: u'{UNK_CTRL_F9}',
 	0xFA: u'\\l',

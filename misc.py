@@ -391,22 +391,22 @@ def int16(x):
 	return int(x, 16)
 
 if __name__ == '__main__':
-    args = get_args(
-        'classname',
+	args = get_args(
+		'classname',
 	('addresses', {'nargs': '*', 'type': int16}),
 	('--version', {'default':'ruby'}),
 	('-i', {'dest': 'insert', 'action': 'store_true'}),
-    )
-    class_ = globals()[args.classname]
-    version = args.version
+	)
+	class_ = globals()[args.classname]
+	version = args.version
 
-    if not args.addresses:
-        addresses = [class_.address]
-    else:
-        addresses = args.addresses
+	if not args.addresses:
+		addresses = [class_.address]
+	else:
+		addresses = args.addresses
 
-    for address in addresses:
-	    if args.insert:
-		insert_recursive(class_, address, version)
-	    else:
-		print print_recursive(class_, address, version)
+	for address in addresses:
+		if args.insert:
+			insert_recursive(class_, address, version)
+		else:
+			print print_recursive(class_, address, version)
