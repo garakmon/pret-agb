@@ -920,3 +920,9 @@ Route124_DivingTreasureHuntersHouse
 """
 
 ruby = filter(bool, ruby.split('\n'))
+
+firered = """
+
+"""
+
+firered = filter(bool, firered.split('\n'))
