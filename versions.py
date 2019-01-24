@@ -3,16 +3,15 @@ import charmap
 
 firered = {
 	'version': 'firered',
-	'map_groups_address': ,
+	'map_groups_address': 0x3526A8,
 	'baserom_path': 'baserom.gba',
-	'maps_paths': ['data/event_scripts.s', 'data/rom4.s', 'data/graphics.s', 'data/sound_data.s', 'data/rom_8525F58.s', 'data/battle_frontier_2.s'],
+	'maps_paths': ['data/event_scripts.s', 'data/graphics.s', 'data/sound_data.s', 'data/data.s', 'data/data_835B488.s', 'data/data_83F5738.s', 'data/data_83FECCC.s', 'data/data_845FD54.s', 'data/data_8466FB8.s', 'data/data_8468C98.s', 'data/data_8471F00.s'],
 	'force_stop_addresses': [],
 	'map_names': map_names.firered,
-	'field_object_constants_path': 'constants/map_object_constants.inc',
-	'battle_frontier_constants_path': 'constants/battle_frontier_constants.inc',
-	'charmap': charmap.emerald_decode,
+	#'field_object_constants_path': '',# TODO
+	'charmap': charmap.firered_decode,
 	'charmap_jp': charmap.emerald_jp_decode,
-	'mapfile': 'pokeemerald.map',
+	'mapfile': 'pokefirered.map',
 }
 
 emerald = {

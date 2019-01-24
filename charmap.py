@@ -81,7 +81,7 @@ colors = [
 ]
 colors = dict(enumerate(colors))
 
-emerald_decode = {
+firered_decode = {
 	0x00: u' ',
 	0x01: u'À',
 	0x02: u'Á',
